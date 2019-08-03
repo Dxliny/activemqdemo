@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:component-scan base-package="cn.goktech.jms.springtest" />
+    <mvc:annotation-config />
+
+    <bean class="cn.goktech.jms.springtest.ProducerService2Impl" id="producerService2">
+    </bean>
+
+    <bean class="org.apache.activemq.ActiveMQConnectionFactory" id="activeMQConnectionFactory">
+        <property name="brokerURL" value="tcp://127.0.0.1:61616" />
+    </bean>
+
+    <bean class="org.springframework.jms.connection.SingleConnectionFactory" id="connectionFactory">
+        <property name="targetConnectionFactory" ref="activeMQConnectionFactory" />
+    </bean>
+
+    <!--点对点实例-->
+    <bean class="org.apache.activemq.command.ActiveMQQueue" id="activeMQQueue">
+        <constructor-arg value="myqueue2" />
+    </bean>
+
+    <bean class="org.apache.activemq.command.ActiveMQTopic" id="activeMQTopic">
+        <constructor-arg value="mytopic2" />
+    </bean>
+
+    <bean class="org.springframework.jms.core.JmsTemplate" id="jmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+    </bean>
+</beans>
